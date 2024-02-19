@@ -1,6 +1,7 @@
 package lexer
 
 import (
+	"fmt"
 	"monkey/token"
 )
 
@@ -31,6 +32,7 @@ func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
 	l.skipWhitespace()
+	fmt.Printf("Current char is: %q", l.ch)
 
 	switch l.ch {
 	case '=':
