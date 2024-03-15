@@ -26,13 +26,14 @@ func (l *Lexer) readChar() {
 	}
 	l.position = l.readPosition
 	l.readPosition += 1
+	fmt.Printf("Read position is: %v \n", l.readPosition)
 }
 
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
 	l.skipWhitespace()
-	fmt.Printf("Current char is: %q", l.ch)
+	fmt.Printf("Current char is: %q \n", l.ch)
 
 	switch l.ch {
 	case '=':
@@ -77,6 +78,7 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.GT, l.ch)
 	case '-':
 		tok = newToken(token.MINUS, l.ch)
+		return tok
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
@@ -94,6 +96,7 @@ func (l *Lexer) NextToken() token.Token {
 		}
 	}
 	l.readChar()
+	fmt.Printf("Current token is: %+v \n", tok)
 	return tok
 }
 

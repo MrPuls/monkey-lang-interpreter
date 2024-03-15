@@ -14,7 +14,7 @@ let foobar = 838383;
 `
 	l := lexer.New(input)
 	p := New(l)
-	program := p.parseProgram()
+	program := p.ParseProgram()
 	checkParserErrors(t, p)
 	if program == nil {
 		t.Fatalf("ParseProgram() returned nil")
@@ -80,7 +80,7 @@ return 993229;
 `
 	l := lexer.New(input)
 	p := New(l)
-	program := p.parseProgram()
+	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
 	if len(program.Statements) != 3 {
@@ -104,7 +104,7 @@ func TestIdentifierExpression(t *testing.T) {
 	input := "foobar;"
 	l := lexer.New(input)
 	p := New(l)
-	program := p.parseProgram()
+	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
 	if len(program.Statements) != 1 {
