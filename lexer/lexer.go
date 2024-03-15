@@ -33,7 +33,6 @@ func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
 	l.skipWhitespace()
-	fmt.Printf("Current char is: %q \n", l.ch)
 
 	switch l.ch {
 	case '=':
@@ -96,7 +95,6 @@ func (l *Lexer) NextToken() token.Token {
 		}
 	}
 	l.readChar()
-	fmt.Printf("Current token is: %+v \n", tok)
 	return tok
 }
 

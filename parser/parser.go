@@ -84,6 +84,11 @@ func (p *Parser) peekError(t token.Type) {
 	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
 }
+
+func (p *Parser) noSemicolonOnEofError() {
+	msg := fmt.Sprint("Expected semicolon at the end of the expression, instead got EOF")
+	p.errors = append(p.errors, msg)
+}
 func (p *Parser) nextToken() {
 	p.curToken = p.peekToken
 	p.peekToken = p.l.NextToken()
@@ -131,8 +136,11 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 
 	stmt.Value = p.parseExpression(LOWEST)
 
-	// Would be probably better to throw an error if there is no semicolon at the end of the expression
-	for !p.curTokenIs(token.SEMICOLON) && !p.curTokenIs(token.EOF) {
+	for !p.curTokenIs(token.SEMICOLON) {
+		if p.curTokenIs(token.EOF) {
+			p.noSemicolonOnEofError()
+			return stmt
+		}
 		p.nextToken()
 	}
 
@@ -148,7 +156,11 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 
 	stmt.ReturnValue = p.parseExpression(LOWEST)
 
-	for !p.curTokenIs(token.SEMICOLON) && !p.curTokenIs(token.EOF) {
+	for !p.curTokenIs(token.SEMICOLON) {
+		if p.curTokenIs(token.EOF) {
+			p.noSemicolonOnEofError()
+			return stmt
+		}
 		p.nextToken()
 	}
 
