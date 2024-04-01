@@ -8,14 +8,18 @@ import (
 )
 
 type TypeObject string
+type BuiltinFunction func(args ...Object) Object
 
 const (
-	IntegerObj     = "INTEGER"
-	BooleanObj     = "BOOLEAN"
-	NullObj        = "NULL"
-	ReturnValueObj = "RETURN_VALUE"
-	ErrorObj       = "ERROR"
-	FunctionObj    = "FUNCTION"
+	IntegerObj         = "INTEGER"
+	BooleanObj         = "BOOLEAN"
+	NullObj            = "NULL"
+	ReturnValueObj     = "RETURN_VALUE"
+	ErrorObj           = "ERROR"
+	FunctionObj        = "FUNCTION"
+	StingObj           = "STRING"
+	BuiltinFunctionObj = "BUILTIN"
+	ArrayObj           = "ARRAY"
 )
 
 type Object interface {
@@ -45,6 +49,17 @@ type Function struct {
 	Parameters []*ast.Identifier
 	Body       *ast.BlockStatement
 	Env        *Environment
+}
+
+type String struct {
+	Value string
+}
+
+type Builtin struct {
+	Fn BuiltinFunction
+}
+type Array struct {
+	Elements []Object
 }
 
 func (i *Integer) Inspect() string {
@@ -104,6 +119,36 @@ func (f *Function) Inspect() string {
 	out.WriteString(") {\n")
 	out.WriteString(f.Body.String())
 	out.WriteString("\n}")
+
+	return out.String()
+}
+
+func (s *String) Type() TypeObject {
+	return StingObj
+}
+
+func (s *String) Inspect() string {
+	return s.Value
+}
+
+func (b *Builtin) Type() TypeObject {
+	return BuiltinFunctionObj
+}
+
+func (b *Builtin) Inspect() string {
+	return "builtin function"
+}
+
+func (ao *Array) Type() TypeObject { return ArrayObj }
+func (ao *Array) Inspect() string {
+	var out bytes.Buffer
+	var elements []string
+	for _, e := range ao.Elements {
+		elements = append(elements, e.Inspect())
+	}
+	out.WriteString("[")
+	out.WriteString(strings.Join(elements, ", "))
+	out.WriteString("]")
 
 	return out.String()
 }
