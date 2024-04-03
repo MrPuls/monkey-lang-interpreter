@@ -17,6 +17,7 @@ const (
 	MINUS     = "-"
 	COMMA     = ","
 	SEMICOLON = ";"
+	COLON     = ":"
 
 	LPAREN   = "("
 	RPAREN   = ")"
