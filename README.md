@@ -24,11 +24,19 @@ Monkey support basic features like:
 # Example
 
 ```go
-func foobar(first, seconds) {
+func add(first, seconds) {
 	return first + second
 }
 
+add(1,2)
+>> 3
+
 ========
 	
-let foo = [1,2,3,4,"foo", {"Name": "Monkey"}]
+let foo = [1,2,3,4,"foo", {"name": "Monkey"}]
+
+foo[2]
+>> 3
+last(foo)["name"]
+>> Monkey
 ```
